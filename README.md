@@ -8,39 +8,6 @@ So doesn't Responsible have a lot of magic I hear you ask. And the answer is yes
 
 This is the main class used for declaring what the generated JSON will look like. 
 
-### Initialization
-
-It is initialized using a consumer (see below) and a data object that the JSON will be generated from.
-
-### data_object_name
-
-#### Pending code merge
-This is a convenience method and allow you to specify an access name for the data object you passed into the initializer (you can also access this object using the ```data``` method)
-
-### property
-
-This is how you add items to the json output.  Items are added in the order they are declared and have a number of options that can be set.  
-
-#### delegate
-
-If set to true the property be automatically read from the data object that was passed in.
-
-#### to
-
-This should be used with delegate if for any reason the method on the object does not directly match the name you want to use in the json output
-
-i.e.
-
-```
-property :is_king, delegate: true, to: :is_king?
-```
-
-#### restrict_to
-
-Used in conjunction with the consumer (see below) to determine if the property should be included in the json output at runtime.  This allows a single Responsible builder to be able to output different json data based on a users permissions.
-
-### Example of the above functionailty in action
-
 ```
 require 'json'
 class MySerializer < Responsible::Base
@@ -78,14 +45,39 @@ MySerializer.new(consumer, data).to_json =>
 }
 ```
 
+### Initialization
+
+It is initialized using a consumer (see below) and a data object that the JSON will be generated from.
+
+### data_object_name
+
+#### Pending code merge
+This is a convenience method and allow you to specify an access name for the data object you passed into the initializer (you can also access this object using the ```data``` method)
+
+### property
+
+This is how you add items to the json output.  Items are added in the order they are declared and have a number of options that can be set.  
+
+#### delegate
+
+If set to true the property be automatically read from the data object that was passed in.
+
+#### to
+
+This should be used with delegate if for any reason the method on the object does not directly match the name you want to use in the json output
+
+i.e.
+
+```
+property :is_king, delegate: true, to: :is_king?
+```
+
+#### restrict_to
+
+Used in conjunction with the consumer (see below) to determine if the property should be included in the json output at runtime.  This allows a single Responsible builder to be able to output different json data based on a users permissions.
+
+
 ## Consumer
-
-The consumer object is responsible for handling permissioning within the system. The base consumer object that is supplied with the gem can be initialized with a list of restrictions that the currently user can see, when passed into a Responsible class, this will limit the properties that are output to JSON to those which either:
-
-* have no restrictions
-* Are restricted to one of the values supplied to the consumer object on creation.
-
-### Example
 
 ```
 require 'json'
@@ -121,6 +113,11 @@ no_permission_consumer = Responsible::Consumer.new
 RestrictedSerializer.new(no_permission_consumer, number).to_json 
 # => {always: 'here'}
 ```
+
+The consumer object is responsible for handling permissioning within the system. The base consumer object that is supplied with the gem can be initialized with a list of restrictions that the currently user can see, when passed into a Responsible class, this will limit the properties that are output to JSON to those which either:
+
+* have no restrictions
+* Are restricted to one of the values supplied to the consumer object on creation.
 
 ### Custom Consumers
 
