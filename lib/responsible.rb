@@ -1,3 +1,5 @@
+require 'consumer'
+
 module Responsible
 
   class PropertyNotImplemented < StandardError; end
