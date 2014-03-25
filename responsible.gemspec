@@ -10,10 +10,11 @@ Gem::Specification.new do |s|
   s.email      = "developers@reevoo.com"
   s.summary    = "Response builders"
 
-  s.files      = %w[ Gemfile Rakefile README.markdown gem-create.gemspec LICENSE ]
+  s.files      = %w[ Gemfile README.md responsible.gemspec LICENSE ]
   s.files     += Dir['lib/**/*']
   s.test_files = Dir['spec/**/*']
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest'
+  s.add_development_dependency 'rspec'
 end
