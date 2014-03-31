@@ -6,6 +6,11 @@ module Responsible
   class Base
 
     class << self
+
+      def data_object_name name
+        alias_method name, :data
+      end
+
       def doc(str=nil)
         @doc ||= []
         @doc << str if str
@@ -56,7 +61,7 @@ module Responsible
 
       result
     end
-
+    
     private
 
     def _properties_

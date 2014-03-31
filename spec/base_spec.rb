@@ -125,4 +125,24 @@ describe Responsible::Base do
       expect(klass.new(consumer, data).as_json).to eq( { with_external_role: 'external', with_analytics_role: 'analytics' } )
     end
   end
+
+  describe "#data_object_name" do
+    
+    let(:consumer) { double(:consumer, can_see?: true) }
+
+    it "allows aliasing of the data method to a more sensible name" do
+      klass = Class.new(described_class) do
+
+        data_object_name :my_custom_name
+        property :prop
+
+        def prop
+          my_custom_name
+        end
+      end
+
+      expect(klass.new(consumer, 'foo').as_json).to eq({ prop: 'foo' })
+    end
+
+  end
 end
