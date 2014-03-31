@@ -5,7 +5,8 @@ module Responsible
     end
 
     def can_see?(restrictions)
-      @valid_restrictions.include?(restrictions)
+      # always allow field with no restrictions to be seen
+      restrictions.nil? || (Array(@valid_restrictions) & Array(restrictions)).any?
     end
   end
 end

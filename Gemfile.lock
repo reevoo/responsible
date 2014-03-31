@@ -4,6 +4,7 @@ PATH
     responsible (0.0.1)
 
 GEM
+  remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
     minitest (4.7.5)
