@@ -6,7 +6,7 @@ So doesn't Responsible have a lot of magic I hear you ask. And the answer is yes
 
 ## Responsible Base
 
-This is the main class used for declaring what the generated JSON will look like. 
+This is the main class used for declaring what the generated JSON will look like.
 
 ```
 require 'json'
@@ -56,7 +56,7 @@ This is a convenience method and allow you to specify an access name for the dat
 
 ### property
 
-This is how you add items to the json output.  Items are added in the order they are declared and have a number of options that can be set.  
+This is how you add items to the json output.  Items are added in the order they are declared and have a number of options that can be set.
 
 #### delegate
 
@@ -98,19 +98,19 @@ end
 number = Number.new
 
 even_consumer = Responsible::Consumer.new(:even)
-RestrictedSerializer.new(even_consumer, number).to_json 
+RestrictedSerializer.new(even_consumer, number).to_json
 # => {always: 'here', two: 2, four: 4}
 
 prime_consumer = Responsible::Consumer.new(:prime)
-RestrictedSerializer.new(prime_consumer, number).to_json 
+RestrictedSerializer.new(prime_consumer, number).to_json
 # => {always: 'here', two: 2, three: 3}
 
 all_permission_consumer = Responsible::Consumer.new(:prime, :even)
-RestrictedSerializer.new(all_permission_consumer, number).to_json 
+RestrictedSerializer.new(all_permission_consumer, number).to_json
 # => {always: 'here', two: 2, three: 3, four: 4}
 
 no_permission_consumer = Responsible::Consumer.new
-RestrictedSerializer.new(no_permission_consumer, number).to_json 
+RestrictedSerializer.new(no_permission_consumer, number).to_json
 # => {always: 'here'}
 ```
 
@@ -122,3 +122,9 @@ The consumer object is responsible for handling permissioning within the system.
 ### Custom Consumers
 
 Please not that the Consumer class is here as a starting point only and that in a production system we would expect a more complicated set of rules to be required. As such do not limit yourself to the sets of restriction functionality outlined here if it does not meet your usecase
+
+### Release notes:
+
+0.0.3
+Ensure that property is always included when no restrictions are specificed.
+
