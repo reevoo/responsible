@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.files     += Dir['lib/**/*']
   s.test_files = Dir['spec/**/*']
 
-  s.add_development_dependency 'rake', '~> 0'
-  s.add_development_dependency 'minitest', '~> 0'
-  s.add_development_dependency 'rspec', '~> 0'
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'minitest'
+  s.add_development_dependency 'rspec'
 end
