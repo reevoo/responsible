@@ -75,7 +75,7 @@ describe Responsible::Base do
         property :no_role
 
         def no_role
-          data.no_role
+          __data__.no_role
         end
       end
 
@@ -90,7 +90,7 @@ describe Responsible::Base do
         property :with_role, restrict_to: :some_role
 
         def with_role
-          data.with_role
+          __data__.with_role
         end
       end
 
@@ -106,19 +106,19 @@ describe Responsible::Base do
         property :with_another_role,   restrict_to: :another_role
 
         def with_external_role
-          data.with_external_role
+          __data__.with_external_role
         end
 
         def with_analytics_role
-          data.with_analytics_role
+          __data__.with_analytics_role
         end
 
         def with_another_role
-          data.with_another_role
+          __data__.with_another_role
         end
       end
 
-      
+
       data = double(:data, with_external_role: 'external', with_analytics_role: 'analytics', with_another_role: 'another')
       consumer = Responsible::Consumer.new(:external, :analytics)
 
@@ -127,7 +127,7 @@ describe Responsible::Base do
   end
 
   describe "#data_object_name" do
-    
+
     let(:consumer) { double(:consumer, can_see?: true) }
 
     it "allows aliasing of the data method to a more sensible name" do
