@@ -1,4 +1,4 @@
-require 'consumer'
+require 'responsible/consumer'
 
 module Responsible
 
