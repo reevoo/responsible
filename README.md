@@ -52,7 +52,7 @@ It is initialized using a consumer (see below) and a data object that the JSON w
 ### data_object_name
 
 #### Pending code merge
-This is a convenience method and allow you to specify an access name for the data object you passed into the initializer (you can also access this object using the ```__data__``` method)
+This is a convenience method and allows you to specify an access name for the data object you passed into the initializer (you can also access this object using the ```__data__``` method)
 
 ### property
 
