@@ -1,4 +1,4 @@
-require 'consumer'
+require 'responsible/consumer'
 
 module Responsible
 
@@ -10,7 +10,7 @@ module Responsible
     class << self
 
       def data_object_name name
-        alias_method name, :data
+        alias_method name, :__data__
       end
 
       def doc(str=nil)
@@ -35,15 +35,15 @@ module Responsible
 
       def delegate_method(name, to)
         define_method name do
-          data.send(to || name)
+          __data__.send(to || name)
         end
       end
     end
 
-    attr_reader :consumer, :data
+    attr_reader :consumer, :__data__
 
     def initialize(consumer, data)
-      @consumer, @data = consumer, data
+      @consumer, @__data__ = consumer, data
 
       undefined_properties = _properties_.keys - methods
 
@@ -63,7 +63,12 @@ module Responsible
 
       result
     end
-    
+
+    def data
+      warn "[DEPRECATION] #{Kernel.caller.first}\n[DEPRECATION] `data` is deprecated.  Please use `__data__` instead."
+      __data__
+    end
+
     private
 
     def _properties_

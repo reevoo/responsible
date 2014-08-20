@@ -1,12 +1,3 @@
-module Responsible
-  class Consumer
-    def initialize(*valid_restrictions)
-      @valid_restrictions = valid_restrictions
-    end
+warn "[DEPRECATION] #{Kernel.caller.first}\n[DEPRECATION] `require 'consumer'` is deprecated.  File should now be correctly loaded using autoloading."
 
-    def can_see?(restrictions)
-      # always allow field with no restrictions to be seen
-      restrictions.nil? || (Array(@valid_restrictions) & Array(restrictions)).any?
-    end
-  end
-end
+require 'responsible/consumer'

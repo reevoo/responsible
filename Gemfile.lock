@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    responsible (0.0.1)
+    responsible (0.1.0)
 
 GEM
   remote: https://rubygems.org/
