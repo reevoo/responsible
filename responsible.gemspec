@@ -9,12 +9,13 @@ Gem::Specification.new do |s|
   s.authors    = ["dw_henry", "lamp"]
   s.email      = "developers@reevoo.com"
   s.summary    = "Response builders"
+  s.description= "JSON building library"
 
   s.files      = %w[ Gemfile README.md responsible.gemspec LICENSE ]
   s.files     += Dir['lib/**/*']
   s.test_files = Dir['spec/**/*']
 
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'minitest'
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rake', '~> 0'
+  s.add_development_dependency 'minitest', '~> 0'
+  s.add_development_dependency 'rspec', '~> 0'
 end
