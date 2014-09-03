@@ -1,4 +1,5 @@
 require 'responsible/consumer'
+require 'responsible/property'
 
 module Responsible
 
@@ -9,7 +10,7 @@ module Responsible
 
     class << self
 
-      def data_object_name name
+      def data_object_name(name)
         alias_method name, :__data__
       end
 
@@ -23,12 +24,14 @@ module Responsible
         unknown_configuration_params = options.keys - [:delegate, :to, :restrict_to, :doc]
         raise(Responsible::UnknownConfigurationParameter, unknown_configuration_params.join(", ")) if unknown_configuration_params.any?
 
-        properties[name.to_sym] = options
-        delegate_method(name, options[:to]) if options[:delegate]
+        property = Property.new(name.to_sym, options)
+
+        properties << property
+        delegate_method(property.name, property.options[:to]) if property.options[:delegate]
       end
 
       def properties
-        @properties ||= {}
+        @properties ||= []
       end
 
       private
@@ -45,23 +48,19 @@ module Responsible
     def initialize(consumer, data)
       @consumer, @__data__ = consumer, data
 
-      undefined_properties = _properties_.keys - methods
+      undefined_properties = _properties_.map(&:name) - methods
 
       if undefined_properties.any?
         raise Responsible::PropertyNotImplemented, undefined_properties.join(", ")
       end
     end
 
-    def as_json(opt={})
-      result = {}
-
-      _properties_.each do |name, options|
-        if consumer.can_see?(options[:restrict_to])
-          result[name] = send(name)
+    def as_json(_={})
+      _properties_.each_with_object({}) do |property, acc|
+        if consumer.can_see?(property.options[:restrict_to], self)
+          acc[property.name] = public_send(property.name)
         end
       end
-
-      result
     end
 
     def data
