@@ -21,11 +21,7 @@ module Responsible
       end
 
       def property(name, options={})
-        unknown_configuration_params = options.keys - [:delegate, :to, :restrict_to, :doc]
-        raise(Responsible::UnknownConfigurationParameter, unknown_configuration_params.join(", ")) if unknown_configuration_params.any?
-
         property = Property.new(name.to_sym, options)
-
         properties << property
         delegate_method(property.name, property.options[:to]) if property.options[:delegate]
       end
