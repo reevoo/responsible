@@ -1,5 +1,7 @@
 # Responsible - A Generic Response Builder
 
+[![Build Status](https://travis-ci.org/reevoo/responsible.svg)](https://travis-ci.org/reevoo/responsible)
+
 This is a alternative to [ActiveModel::Serializer](https://github.com/rails-api/active_model_serializers).  Why you may ask, well when we first built this we did not know about it, any then when we saw how they it had been implemented we decided it had too much magic.
 
 So doesn't Responsible have a lot of magic I hear you ask. And the answer is yes but the magic is clearly defined, with the user needed to explicity set all input, have a look and see what I mean.
