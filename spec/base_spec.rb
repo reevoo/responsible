@@ -40,7 +40,7 @@ describe Responsible::Base do
       }.to_not raise_error
 
       data = Struct.new(:delegated).new('delegated value')
-      klass.new(consumer, data).delegated.should == 'delegated value'
+      expect(klass.new(consumer, data).delegated).to eq('delegated value')
     end
 
     it "raises an error if defined with unknown param" do
@@ -63,7 +63,7 @@ describe Responsible::Base do
           end
         end
 
-        klass.new(consumer, data_class.new).delegated.should eq(true)
+        expect(klass.new(consumer, data_class.new).delegated).to be_true
       end
     end
   end
