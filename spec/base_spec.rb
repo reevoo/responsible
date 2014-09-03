@@ -63,7 +63,7 @@ describe Responsible::Base do
           end
         end
 
-        expect(klass.new(consumer, data_class.new).delegated).to be_true
+        expect(klass.new(consumer, data_class.new).delegated).to eq(true)
       end
     end
   end
