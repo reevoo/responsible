@@ -10,7 +10,7 @@ So doesn't Responsible have a lot of magic I hear you ask. And the answer is yes
 
 This is the main class used for declaring what the generated JSON will look like.
 
-```
+```ruby
 require 'json'
 class MySerializer < Responsible::Base
   # data_object_name :number
@@ -81,7 +81,7 @@ Used in conjunction with the consumer (see below) to determine if the property s
 
 ## Consumer
 
-```
+```ruby
 require 'json'
 class RestrictedSerializer < Responsible::Base
   property :always,delegate: true
