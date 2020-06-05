@@ -81,6 +81,28 @@ describe Responsible::Base do
       expect(klass.new(consumer, data).as_json).to eq(no_role: true)
     end
 
+    it "allows to delegate to hash key" do
+      klass = Class.new(described_class) do
+        property :no_role, delegate: :hash_key
+      end
+
+      consumer = double(:consumer, can_see?: true)
+      data = { no_role: true }
+
+      expect(klass.new(consumer, data).as_json).to eq(no_role: true)
+    end
+
+    it "allows to delegate to hash key with different name" do
+      klass = Class.new(described_class) do
+        property :no_role, delegate: :hash_key, to: :no_role?
+      end
+
+      consumer = double(:consumer, can_see?: true)
+      data = { no_role?: true }
+
+      expect(klass.new(consumer, data).as_json).to eq(no_role: true)
+    end
+
     it "returns a data structure that does not include properties that has a role the consumer can't see" do
       klass = Class.new(described_class) do
         property :with_role, restrict_to: :some_role
