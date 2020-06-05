@@ -1,8 +1,8 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 gemspec
 
 gem "bundler-audit"
 gem "geminabox"
-gem "ruby_audit"
 gem "reevoocop"
+gem "ruby_audit"
