@@ -67,7 +67,8 @@ module Responsible
 
     def get_value(property)
       if property.options[:delegate] == :hash_key
-        __data__.fetch(property.options[:to] || property.name)
+        keys_path = Array(property.options[:to] || property.name)
+        __data__.dig(*keys_path)
       else
         public_send(property.name)
       end

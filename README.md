@@ -54,17 +54,19 @@ class MySerializer < Responsible::Base
 
   property :value_1, delegate: :hash_key
   property :value_2, delegate: :hash_key, to: :value_2_key
+  property :value_3, delegate: :hash_key, to: [:nested, :value_3_key]
 end
 
 
-data = { value_1: 'one', value_2_key: 'two' }
+data = { value_1: 'one', value_2_key: 'two', nested: { value_3_key: 'three' } }
 consumer = Responsible::Consumer.new
 
 MySerializer.new(consumer, data).to_json =>
 
 {
   value_1: 'one',
-  value_2: 'two'
+  value_2: 'two',
+  value_3: 'three'
 }
 ```
 
