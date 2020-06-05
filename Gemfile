@@ -5,3 +5,4 @@ gemspec
 gem "bundler-audit"
 gem "geminabox"
 gem "ruby_audit"
+gem "reevoocop"

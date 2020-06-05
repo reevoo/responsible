@@ -40,28 +40,8 @@ test-up:
 	docker-compose -f docker-compose.yml up -d
 
 .PHONY: test
-test: test-up reevoocop ruby-audit bundle-audit bundle-leak test-specs
-
-.PHONY: reevoocop
-reevoocop: test-up
-	docker-compose exec app rake reevoocop
-
-.PHONY: ruby-audit
-ruby-audit: test-up
-	mkdir -p $HOME/.local/share/ruby-advisory-db
-	docker-compose exec app ruby-audit check
-
-.PHONY: bundle-audit
-bundle-audit: test-up
-	docker-compose exec app bundle-audit check --update
-
-.PHONY: bundle-leak
-bundle-leak: test-up
-	docker-compose exec app bundle leak check --update
-
-.PHONY: test-specs
-test-specs: test-up
-	docker-compose exec app rspec
+test: test-up
+	docker-compose exec app .buildkite/test.sh
 
 .PHONY: build-gem
 build-gem: up
