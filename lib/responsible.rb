@@ -1,5 +1,5 @@
-require 'responsible/consumer'
-require 'responsible/property'
+require "responsible/consumer"
+require "responsible/property"
 
 module Responsible
 
@@ -14,13 +14,13 @@ module Responsible
         alias_method name, :__data__
       end
 
-      def doc(str=nil)
+      def doc(str = nil)
         @doc ||= []
         @doc << str if str
         @doc
       end
 
-      def property(name, options={})
+      def property(name, options = {})
         property = Property.new(name.to_sym, options)
         properties << property
         delegate_method(property.name, property.options[:to]) if property.options[:delegate]
@@ -32,9 +32,9 @@ module Responsible
 
       private
 
-      def delegate_method(name, to)
+      def delegate_method(name, to_delegate)
         define_method name do
-          __data__.send(to || name)
+          __data__.send(to_delegate || name)
         end
       end
     end
@@ -46,16 +46,12 @@ module Responsible
 
       undefined_properties = _properties_.map(&:name) - methods
 
-      if undefined_properties.any?
-        raise Responsible::PropertyNotImplemented, undefined_properties.join(", ")
-      end
+      fail Responsible::PropertyNotImplemented, undefined_properties.join(", ") if undefined_properties.any?
     end
 
-    def as_json(_={})
+    def as_json(_opts = {})
       _properties_.each_with_object({}) do |property, acc|
-        if consumer.can_see?(property.options[:restrict_to], self)
-          acc[property.name] = public_send(property.name)
-        end
+        acc[property.name] = public_send(property.name) if consumer.can_see?(property.options[:restrict_to], self)
       end
     end
 

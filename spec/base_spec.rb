@@ -1,7 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Responsible::Base do
-
   context "when a simple property is declare" do
     let(:consumer) { double(:consumer) }
     let(:data) { double(:data) }
@@ -11,23 +10,21 @@ describe Responsible::Base do
         property :not_implemented
       end
 
-      expect {
+      expect do
         klass.new(consumer, data)
-      }.to raise_error(Responsible::PropertyNotImplemented)
+      end.to raise_error(Responsible::PropertyNotImplemented)
     end
 
     it "defines a property if the method exists" do
       klass = Class.new(described_class) do
         property :implemented
 
-        def implemented
-
-        end
+        def implemented; end
       end
 
-      expect {
+      expect do
         klass.new(consumer, data)
-      }.to_not raise_error
+      end.to_not raise_error
     end
 
     it "will create a delegated method (to the 2nd arg) if delegate: true passed in" do
@@ -35,20 +32,20 @@ describe Responsible::Base do
         property :delegated, delegate: true
       end
 
-      expect {
+      expect do
         klass.new(consumer, data)
-      }.to_not raise_error
+      end.to_not raise_error
 
-      data = Struct.new(:delegated).new('delegated value')
-      expect(klass.new(consumer, data).delegated).to eq('delegated value')
+      data = Struct.new(:delegated).new("delegated value")
+      expect(klass.new(consumer, data).delegated).to eq("delegated value")
     end
 
     it "raises an error if defined with unknown param" do
-      expect {
+      expect do
         Class.new(described_class) do
           property :delegated, unknown_param: true
         end
-      }.to raise_error(Responsible::UnknownConfigurationParameter)
+      end.to raise_error(Responsible::UnknownConfigurationParameter)
     end
 
     context "when 'to' parameter passed in" do
@@ -69,7 +66,6 @@ describe Responsible::Base do
   end
 
   describe "#as_json" do
-
     it "returns a data structure that includes properties without a role" do
       klass = Class.new(described_class) do
         property :no_role
@@ -95,7 +91,7 @@ describe Responsible::Base do
       end
 
       consumer = double(:consumer, can_see?: false)
-      data = double(:data, with_role: 'besty')
+      data = double(:data, with_role: "besty")
       expect(klass.new(consumer, data).as_json).to eq({})
     end
 
@@ -119,20 +115,21 @@ describe Responsible::Base do
       end
 
 
-      data = double(:data, with_external_role: 'external', with_analytics_role: 'analytics', with_another_role: 'another')
+      data = double(:data,
+        with_external_role: "external",
+        with_analytics_role: "analytics",
+        with_another_role: "another")
       consumer = Responsible::Consumer.new(:external, :analytics)
 
-      expect(klass.new(consumer, data).as_json).to eq( { with_external_role: 'external', with_analytics_role: 'analytics' } )
+      expect(klass.new(consumer, data).as_json).to eq(with_external_role: "external", with_analytics_role: "analytics")
     end
   end
 
   describe "#data_object_name" do
-
     let(:consumer) { double(:consumer, can_see?: true) }
 
     it "allows aliasing of the data method to a more sensible name" do
       klass = Class.new(described_class) do
-
         data_object_name :my_custom_name
         property :prop
 
@@ -141,8 +138,7 @@ describe Responsible::Base do
         end
       end
 
-      expect(klass.new(consumer, 'foo').as_json).to eq({ prop: 'foo' })
+      expect(klass.new(consumer, "foo").as_json).to eq(prop: "foo")
     end
-
   end
 end

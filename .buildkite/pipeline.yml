@@ -1,0 +1,37 @@
+steps:
+
+  - label: ":docker: Build"
+    command: |
+      make publish
+    plugins:
+      - ecr#v2.1.0:
+          login: true
+          account_ids: "896069866492"
+          no-include-email: true
+          region: "eu-west-1"
+
+  - wait
+
+  - label: ":bomb: Tests"
+    command: |
+      make test
+    plugins:
+      - ecr#v2.1.0:
+          login: true
+          account_ids: "896069866492"
+          no-include-email: true
+          region: "eu-west-1"
+
+
+  - block: ":rocket: Publish gem"
+
+  - label: ":gem: Publish gem"
+    command: |
+      make publish-gem
+    plugins:
+      - ecr#v2.1.0:
+          login: true
+          account_ids: "896069866492"
+          no-include-email: true
+          region: "eu-west-1"
+
