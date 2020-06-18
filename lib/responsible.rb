@@ -23,7 +23,8 @@ module Responsible
       def property(name, options = {})
         property = Property.new(name.to_sym, options)
         properties << property
-        delegate_method(property.name, property.options[:to]) if property.options[:delegate]
+
+        delegate_method(property.name, property.options[:to]) if property.options[:delegate] == true
       end
 
       def properties
@@ -44,14 +45,12 @@ module Responsible
     def initialize(consumer, data)
       @consumer, @__data__ = consumer, data
 
-      undefined_properties = _properties_.map(&:name) - methods
-
       fail Responsible::PropertyNotImplemented, undefined_properties.join(", ") if undefined_properties.any?
     end
 
     def as_json(_opts = {})
       _properties_.each_with_object({}) do |property, acc|
-        acc[property.name] = public_send(property.name) if consumer.can_see?(property.options[:restrict_to], self)
+        acc[property.name] = get_value(property) if consumer.can_see?(property.options[:restrict_to], self)
       end
     end
 
@@ -64,6 +63,19 @@ module Responsible
 
     def _properties_
       self.class.properties
+    end
+
+    def get_value(property)
+      if property.options[:delegate] == :hash_key
+        keys_path = Array(property.options[:to] || property.name)
+        __data__.dig(*keys_path)
+      else
+        public_send(property.name)
+      end
+    end
+
+    def undefined_properties
+      _properties_.reject { |p| p.options[:delegate] == :hash_key }.map(&:name) - methods
     end
   end
 end

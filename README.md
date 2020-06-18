@@ -1,6 +1,6 @@
 # Responsible - A Generic Response Builder
 
-[![Build Status](https://travis-ci.org/reevoo/responsible.svg)](https://travis-ci.org/reevoo/responsible)
+[![Build status](https://badge.buildkite.com/425a6d809196afd5bd09a3a1bcbc45ae038668887d27158ba6.svg)](https://buildkite.com/reevoo/responsible)
 
 This is a alternative to [ActiveModel::Serializer](https://github.com/rails-api/active_model_serializers).  Why you may ask, well when we first built this we did not know about it, any then when we saw how they it had been implemented we decided it had too much magic.
 
@@ -47,6 +47,29 @@ MySerializer.new(consumer, data).to_json =>
 }
 ```
 
+```ruby
+# Delegation to hash_key
+require 'json'
+class MySerializer < Responsible::Base
+
+  property :value_1, delegate: :hash_key
+  property :value_2, delegate: :hash_key, to: :value_2_key
+  property :value_3, delegate: :hash_key, to: [:nested, :value_3_key]
+end
+
+
+data = { value_1: 'one', value_2_key: 'two', nested: { value_3_key: 'three' } }
+consumer = Responsible::Consumer.new
+
+MySerializer.new(consumer, data).to_json =>
+
+{
+  value_1: 'one',
+  value_2: 'two',
+  value_3: 'three'
+}
+```
+
 ### Initialization
 
 It is initialized using a consumer (see below) and a data object that the JSON will be generated from.
@@ -62,16 +85,19 @@ This is how you add items to the json output.  Items are added in the order they
 
 #### delegate
 
-If set to true the property be automatically read from the data object that was passed in.
+If set to `true` the property be automatically read from the data object that was passed in.
+
+If set to `:hash_key` the property will be read from hash object key
 
 #### to
 
-This should be used with delegate if for any reason the method on the object does not directly match the name you want to use in the json output
+This should be used with delegate if for any reason the method or hash_key on the object does not directly match the name you want to use in the json output
 
 i.e.
 
 ```
 property :is_king, delegate: true, to: :is_king?
+property :is_princess, delegate: :hash_key, to: :is_princess?
 ```
 
 #### restrict_to
